@@ -8,6 +8,7 @@ class Ws extends CI_Controller {
 
 		settype($board_id, "integer");
 		settype($attribute, "string");
+		settype($attibute_id, "integer");
 		if($board_id == 0 && gettype($board_id) == 'integer') { // foi requisitado: /board
 			//POST: cria um novo quadro de notas, retornando um board_id
 			echo "foi requisitado: /board";
