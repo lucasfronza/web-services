@@ -2,12 +2,12 @@ web-services
 ============
 #Checklist
 - [x] index_post()
-- [] index_delete()
-- [] index_get()
-- [] subject_post()
-- [] subject_get()
-- [] subject_delete()
-- [] subject_put()
+- [ ] index_delete()
+- [ ] index_get()
+- [ ] subject_post()
+- [ ] subject_get()
+- [ ] subject_delete()
+- [ ] subject_put()
 
 #Planejamento Quadro de Notas de acordo com as funções do controller
 
