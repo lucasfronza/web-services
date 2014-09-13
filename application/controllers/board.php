@@ -40,15 +40,12 @@ class Board extends REST_Controller {
 	public function index_get()
 	{
 		$key = $this->get('key');
-		//var_dump($key);
 
-		// Does this key even exist?
-		if ( ! $this->key_model->_key_exists($key) || $key == FALSE)
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
-			// NOOOOOOOOO!
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
 		} else {
-			echo 'dfafs';
+			$this->response($this->board_model->getAllSubjects($key), 200);
 		}
 	}
 
