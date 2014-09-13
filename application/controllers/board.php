@@ -33,7 +33,19 @@ class Board extends REST_Controller {
 	# Passando um board_key por parametro, deleta um board
 	public function index_delete()
 	{
+		$key = isset($_SERVER['HTTP_KEY']) ? $_SERVER['HTTP_KEY'] : FALSE;
 
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
+		} else {
+			if($this->board_model->deleteBoard($key) && $this->key_model->_delete_key($key))
+			{
+				$this->response(array('status' => 1, 'message' => 'Key deleted'));
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Internal Server Error'), 500);
+			}
+		}
 	}
 
 	# Passando um board_key por parametro, retorna o board com as notas

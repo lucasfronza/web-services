@@ -2,7 +2,7 @@ web-services
 ============
 #Checklist
 - [x] index_post()
-- [ ] index_delete()
+- [x] index_delete()
 - [x] index_get()
 - [ ] subject_post()
 - [ ] subject_get()
