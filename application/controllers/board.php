@@ -64,7 +64,31 @@ class Board extends REST_Controller {
 	# Passando um board_key por parametro, cria uma materia, passando o nome, e a nota(opcional)
 	public function subject_post()
 	{
+		$key = $this->post('key');
+		$subject = $this->post('subject');
+		$score = $this->post('score');
 
+		if (!$this->key_model->_key_exists($key) || $key == FALSE)
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
+		} else if ($subject == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Subject name not found.'), 400);
+		} else {
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->subject = $subject;
+
+			if ($score != FALSE)
+			{
+				$obj->score = $score;
+			}
+			if ($subject_id = $this->board_model->insertSubject($obj))
+			{
+				$this->response(array('status' => 1, 'subject_id' => $subject_id), 201); // 201 = Created
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
+			}
+		}
 	}
 
 	# Passando um board_key por parametro, retorna os subject_id associados as materias

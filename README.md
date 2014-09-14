@@ -4,7 +4,7 @@ web-services
 - [x] index_post()
 - [x] index_delete()
 - [x] index_get()
-- [ ] subject_post()
+- [x] subject_post()
 - [ ] subject_get()
 - [ ] subject_delete()
 - [ ] subject_put()
