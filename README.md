@@ -5,7 +5,7 @@ web-services
 - [x] index_delete()
 - [x] index_get()
 - [x] subject_post()
-- [ ] subject_get()
+- [x] subject_get()
 - [ ] subject_delete()
 - [ ] subject_put()
 
@@ -20,7 +20,7 @@ web-services
 
 /board/subject
 	- subject_post(), passando um board_id por parametro, POST: cria uma materia, passando o nome, e a nota(opcional)
-	- subject_get(), passando um board_id por parametro, GET: retorna os subject_id associados as materias
+	- subject_get(), passando um board_id e um subject_id por parametro, GET: retorna os dados associados à materia
 
 /board/subject
 	- subject_delete(), passando um board_id e um subject_id por parametro, DELETE: deleta a materia
@@ -38,7 +38,7 @@ web-services
 
 /board/{board_id}/subject
 	- POST: cria uma materia, passando o nome, e a nota(opcional)
-	- GET: retorna os subject_id associados as materias
+	- GET: retorna os dados associados à materia
 
 /board/{board_id}/subject/{subject_id}
 	- DELETE: deleta a materia

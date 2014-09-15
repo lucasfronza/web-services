@@ -91,10 +91,29 @@ class Board extends REST_Controller {
 		}
 	}
 
-	# Passando um board_key por parametro, retorna os subject_id associados as materias
+	# Passando um board_key e um subject_id por parametro, retorna os dados associados à materia
 	public function subject_get()
 	{
+		$key = $this->get('key');
+		$subject_id = $this->get('subject_id');
 
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
+		} else if ($subject_id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+		} else {
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->subject_id = $subject_id;
+
+			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			{
+				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+			} else {
+				$this->response($subject, 200);
+			}
+		}
 	}
 
 	# Passando um board_key e um subject_id por parametro, deleta a materia
