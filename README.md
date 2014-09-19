@@ -6,7 +6,7 @@ web-services
 - [x] index_get()
 - [x] subject_post()
 - [x] subject_get()
-- [ ] subject_delete()
+- [x] subject_delete()
 - [ ] subject_put()
 
 #Planejamento Quadro de Notas de acordo com as funções do controller

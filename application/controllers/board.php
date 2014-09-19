@@ -119,7 +119,27 @@ class Board extends REST_Controller {
 	# Passando um board_key e um subject_id por parametro, deleta a materia
 	public function subject_delete()
 	{
+		$key = isset($_SERVER['HTTP_KEY']) ? $_SERVER['HTTP_KEY'] : FALSE;
+		$subject_id = isset($_SERVER['HTTP_ID']) ? $_SERVER['HTTP_ID'] : FALSE;
 
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
+		} else if ($subject_id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing subject_id', 'message' => 'Remember to pass the subject_id: CURLOPT_HTTPHEADER, array("Accept: application/json","id: $id")'), 400);
+		} else {
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->subject_id = $subject_id;
+
+			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			{
+				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+			} else {
+				$this->board_model->deleteSubject($obj);
+				$this->response(array('status' => 1, 'message' => 'Subject deleted'));
+			}
+		}
 	}
 
 	# Passando um board_key e um subject_id, nome e/ou nota por parametro, atualiza nome e/ou nota da materia
