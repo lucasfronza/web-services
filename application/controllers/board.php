@@ -145,7 +145,41 @@ class Board extends REST_Controller {
 	# Passando um board_key e um subject_id, nome e/ou nota por parametro, atualiza nome e/ou nota da materia
 	public function subject_put()
 	{
+		$key = $this->put('key');
+		$subject_id = $this->put('subject_id');
+		$subject = $this->put('subject');
+		$score = $this->put('score');
 
+		if (!$this->key_model->_key_exists($key) || $key == FALSE)
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
+		} else if ($subject_id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+		} else {
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->subject_id = $subject_id;
+
+			if ($score != FALSE)
+			{
+				$obj->score = $score;
+			}
+			if ($subject != FALSE)
+			{
+				$obj->subject = $subject;
+				if(empty($this->board_model->getSubject($obj)))
+				{
+					$this->response(array('status' => 0, 'error' => 'Subject_id not matching.'), 400);
+				}
+			}
+
+			if ($this->board_model->updateSubject($obj))
+			{
+				$this->response(array('status' => 1, 'message' => 'Subject updated.'), 200);
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
+			}
+		}
 	}
 
 }
