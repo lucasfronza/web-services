@@ -1,13 +1,13 @@
 web-services
 ============
 #Checklist
-- [x] index_post()
-- [x] index_delete()
-- [x] index_get()
-- [x] subject_post()
-- [x] subject_get()
-- [x] subject_delete()
-- [x] subject_put()
+- [ ] email/index_post()
+- [x] Quadro de Notas
+
+#Planejamento Notificações por email
+
+/email
+	- index_post(), POST: recebe email de envio, senha, mensagem, título, email de destino e envia o email
 
 #Planejamento Quadro de Notas de acordo com as funções do controller
 
