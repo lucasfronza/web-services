@@ -1,7 +1,10 @@
 web-services
 ============
 #Checklist
-- [ ] email/index_post()
+- [x] quiz/index_post()
+- [ ] quiz/index_delete()
+- [ ] quiz/index_get()
+- [x] email/index_post()
 - [x] Quadro de Notas
 
 #Planejamento Notificações por email
