@@ -4,7 +4,7 @@ web-services
 - [x] quiz/index_post()
 - [x] quiz/index_delete()
 - [x] quiz/index_get()
-- [ ] quiz/quiz_model
+- [x] quiz/quiz_model
 - [x] email/index_post()
 - [x] Quadro de Notas
 
