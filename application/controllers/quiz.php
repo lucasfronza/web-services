@@ -22,7 +22,6 @@ class Quiz extends REST_Controller {
 		{
 			$this->response(array('status' => 1, 'key' => $key), 201); // 201 = Created
 		}
-
 		else
 		{
 			$this->response(array('status' => 0, 'error' => 'Could not save the key.'), 500); // 500 = Internal Server Error
@@ -36,14 +35,14 @@ class Quiz extends REST_Controller {
 
 		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
-			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("key: $key")'), 400);
 		} else {
-			/*if($this->board_model->deleteBoard($key) && $this->key_model->_delete_key($key))
+			if($this->quiz_model->deleteQuiz($key) && $this->key_model->_delete_key($key))
 			{
-				$this->response(array('status' => 1, 'message' => 'Key deleted'));
+				$this->response(array('status' => 1, 'message' => 'Quiz deleted'));
 			} else {
 				$this->response(array('status' => 0, 'error' => 'Internal Server Error'), 500);
-			}*/
+			}
 		}
 	}
 

@@ -2,7 +2,7 @@ web-services
 ============
 #Checklist
 - [x] quiz/index_post()
-- [ ] quiz/index_delete()
+- [x] quiz/index_delete()
 - [ ] quiz/index_get()
 - [x] email/index_post()
 - [x] Quadro de Notas
