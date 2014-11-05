@@ -11,7 +11,7 @@ class Quiz extends REST_Controller {
         $this->load->model('quiz_model');
 	}
 
-	# Cria um novo quiz, retornando um key
+	# Cria um novo Quiz, retornando um key
 	public function index_post()
 	{
 		// Build a new key
@@ -28,7 +28,36 @@ class Quiz extends REST_Controller {
 		}
 	}
 
-	# Passando um key por parametro, deleta um quiz
+	# Passando key, questao, alternativas e resposta, atualiza o Quiz
+	public function subject_put()
+	{
+		$key = $this->put('key');
+
+		$obj = new stdClass();
+		$obj->key = $key;
+		$obj->question = $this->put('question');
+		$obj->alternative1 = $this->put('alternative1');
+		$obj->alternative2 = $this->put('alternative2');
+		$obj->alternative3 = $this->put('alternative3');
+		$obj->alternative4 = $this->put('alternative4');
+		$obj->alternative5 = $this->put('alternative5');
+		$obj->correctAnswer = $this->put('correctAnswer');
+
+		if (!$this->key_model->_key_exists($key) || $key == FALSE)
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
+		} else {
+
+			if ($this->quiz_model->update($obj))
+			{
+				$this->response(array('status' => 1, 'message' => 'Quiz updated.'), 200);
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Could not save the quiz.'), 500); // 500 = Internal Server Error
+			}
+		}
+	}
+
+	# Passando um key por parametro, deleta um Quiz
 	public function index_delete()
 	{
 		$key = isset($_SERVER['HTTP_KEY']) ? $_SERVER['HTTP_KEY'] : FALSE;
@@ -46,7 +75,7 @@ class Quiz extends REST_Controller {
 		}
 	}
 
-	# Passando um key por parametro, retorna o quiz com as perguntas e respostas
+	# Passando um key por parametro, retorna o Quiz com pergunta, alternativas e respostas
 	public function index_get()
 	{
 		$key = $this->get('key');
