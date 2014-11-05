@@ -37,7 +37,7 @@ class Quiz extends REST_Controller {
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("key: $key")'), 400);
 		} else {
-			if($this->quiz_model->deleteQuiz($key) && $this->key_model->_delete_key($key))
+			if($this->quiz_model->delete($key) && $this->key_model->_delete_key($key))
 			{
 				$this->response(array('status' => 1, 'message' => 'Quiz deleted'));
 			} else {
@@ -51,12 +51,12 @@ class Quiz extends REST_Controller {
 	{
 		$key = $this->get('key');
 
-		/*if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
 		} else {
-			$this->response($this->board_model->getAllSubjects($key), 200);
-		}*/
+			$this->response($this->quiz_model->get($key), 200);
+		}
 	}
 
 }
