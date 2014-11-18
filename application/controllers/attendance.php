@@ -121,28 +121,28 @@ class Attendance extends REST_Controller {
 		}
 	}
 
-	# Passando um board_key e um subject_id por parametro, deleta a materia
-	public function subject_delete()
+	# Passando um KEY e o identificador do usuário, deleta o mesmo
+	public function user_delete()
 	{
 		$key = isset($_SERVER['HTTP_KEY']) ? $_SERVER['HTTP_KEY'] : FALSE;
-		$subject_id = isset($_SERVER['HTTP_ID']) ? $_SERVER['HTTP_ID'] : FALSE;
+		$user = isset($_SERVER['HTTP_USER']) ? $_SERVER['HTTP_USER'] : FALSE;
 
 		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
 		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id', 'message' => 'Remember to pass the subject_id: CURLOPT_HTTPHEADER, array("Accept: application/json","id: $id")'), 400);
+			$this->response(array('status' => 0, 'error' => 'Missing user identifier.', 'message' => 'Remember to pass the user: CURLOPT_HTTPHEADER, array("Accept: application/json","user: $user")'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
+			$obj->user = $user;
 
-			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			if (($attendance = $this->attendance_model->getUser($obj)) == FALSE)
 			{
-				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+				$this->response(array('status' => 0, 'error' => 'Invalid user identifier.'), 400);
 			} else {
-				$this->board_model->deleteSubject($obj);
-				$this->response(array('status' => 1, 'message' => 'Subject deleted'));
+				$this->attendance_model->deleteUser($obj);
+				$this->response(array('status' => 1, 'message' => 'User deleted'));
 			}
 		}
 	}

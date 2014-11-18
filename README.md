@@ -7,6 +7,7 @@ web-services
 - [ ] attendance/index_get()
 - [x] attendance/user_post()
 - [x] attendance/user_get()
+- [x] attendance/user_delete()
 - [x] quiz/index_post()
 - [x] quiz/index_delete()
 - [x] quiz/index_get()
