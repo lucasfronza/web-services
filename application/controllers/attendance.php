@@ -38,26 +38,26 @@ class Attendance extends REST_Controller {
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
 		} else {
-			/*if($this->board_model->deleteBoard($key) && $this->key_model->_delete_key($key))
+			if($this->attendance_model->delete($key) && $this->key_model->_delete_key($key))
 			{
 				$this->response(array('status' => 1, 'message' => 'Key deleted'));
 			} else {
 				$this->response(array('status' => 0, 'error' => 'Internal Server Error'), 500);
-			}*/
+			}
 		}
 	}
 
-	# Passando um KEY por parametro, retorna o Quadro com os alunos
+	# Passando um KEY por parametro, retorna o Quadro com os usuários
 	public function index_get()
 	{
 		$key = $this->get('key');
 
-		/*if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
+		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
 		} else {
-			$this->response($this->board_model->getAllSubjects($key), 200);
-		}*/
+			$this->response($this->attendance_model->getAllUsers($key), 200);
+		}
 	}
 
 	# Cria um usuário, passando por parâmetro um KEY, um identificador do usuário,
@@ -147,46 +147,83 @@ class Attendance extends REST_Controller {
 		}
 	}
 
-	# Passando um board_key e um subject_id, nome e/ou nota por parametro, atualiza nome e/ou nota da materia
-	public function subject_put()
+	# Passando um KEY e um idendificador do usuário, presença(opcional) e ausência(opcional),
+	# 	atualiza os dados associados ao mesmo
+	public function user_put()
 	{
-		$key = $this->put('key');
-		$subject_id = $this->put('subject_id');
-		$subject = $this->put('subject');
-		$score = $this->put('score');
+		$key 		= $this->post('key');
+		$user 		= $this->post('user');
+		$attendance = $this->post('attendance');
+		$absence 	= $this->post('absence');
 
 		if (!$this->key_model->_key_exists($key) || $key == FALSE)
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
-		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+		} else if ($user == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'User identifier not found.'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
-
-			if ($score != FALSE)
+			$obj->user = $user;
+			if(empty($this->attendance_model->getUser($obj)))
 			{
-				$obj->score = $score;
+				$this->response(array('status' => 0, 'error' => 'User identifier not matching.'), 400);
 			}
-			if ($subject != FALSE)
+			if ($attendance != FALSE)
 			{
-				$obj->subject = $subject;
-				if(empty($this->board_model->getSubject($obj)))
-				{
-					$this->response(array('status' => 0, 'error' => 'Subject_id not matching.'), 400);
-				}
+				$obj->attendance = $attendance;
 			}
-
-			if ($this->board_model->updateSubject($obj))
+			if ($absence != FALSE)
 			{
-				$this->response(array('status' => 1, 'message' => 'Subject updated.'), 200);
+				$obj->absence = $absence;
+			}
+			if ($this->attendance_model->updateUser($obj))
+			{
+				$this->response(array('status' => 1, 200);
 			} else {
-				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
+				$this->response(array('status' => 0, 'error' => 'Could not save changes.'), 500); // 500 = Internal Server Error
 			}
 		}
 	}
 
+	# Passando um KEY e um idendificador do usuário, presença ou ausência,
+	#	soma 1 à presença ou ausência
+	public function userattendance_put()
+	{
+		$key 		= $this->post('key');
+		$user 		= $this->post('user');
+		$attendance = $this->post('attendance');
+		$absence 	= $this->post('absence');
+
+		if (!$this->key_model->_key_exists($key) || $key == FALSE)
+		{
+			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
+		} else if ($user == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'User identifier not found.'), 400);
+		} else {
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->user = $user;
+			if (empty($user_ = $this->attendance_model->getUser($obj)))
+			{
+				$this->response(array('status' => 0, 'error' => 'User identifier not matching.'), 400);
+			}
+			if ($attendance == 1)
+			{
+				$obj->attendance = $user_->attendance + 1;
+			}
+			if ($absence == 1)
+			{
+				$obj->absence = $user_->absence + 1;
+			}
+			if ($this->attendance_model->updateUser($obj))
+			{
+				$this->response(array('status' => 1, 200);
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Could not save changes.'), 500); // 500 = Internal Server Error
+			}
+		}
+	}
 }
 
 /* End of file attendance.php */

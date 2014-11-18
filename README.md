@@ -3,11 +3,13 @@ web-services
 #Checklist
 - [ ] attendance/attendance_model
 - [x] attendance/index_post()
-- [ ] attendance/index_delete()
-- [ ] attendance/index_get()
+- [x] attendance/index_delete()
+- [x] attendance/index_get()
 - [x] attendance/user_post()
 - [x] attendance/user_get()
 - [x] attendance/user_delete()
+- [x] attendance/user_put()
+- [x] attendance/userattendance_put()
 - [x] quiz/index_post()
 - [x] quiz/index_delete()
 - [x] quiz/index_get()
