@@ -60,7 +60,8 @@ class Attendance extends REST_Controller {
 		}*/
 	}
 
-	# Passando um KEY por parametro, cria um usuário, passando o identificador e a frequência(opcional)
+	# Cria um usuário, passando por parâmetro um KEY, um identificador do usuário,
+	# 	presença(opcional) e ausência(opcional)
 	public function user_post()
 	{
 		$key 		= $this->post('key');
@@ -95,27 +96,27 @@ class Attendance extends REST_Controller {
 		}
 	}
 
-	# Passando um board_key e um subject_id por parametro, retorna os dados associados à materia
-	public function subject_get()
+	# Passando um KEY e um identificador do usuário, retorna os dados associados ao mesmo
+	public function user_get()
 	{
-		$key = $this->get('key');
-		$subject_id = $this->get('subject_id');
+		$key 	= $this->get('key');
+		$user 	= $this->get('user');
 
 		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
 		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+			$this->response(array('status' => 0, 'error' => 'User identifier not found.'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
+			$obj->user = $user;
 
-			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			if (($attendance = $this->attendance_model->getUser($obj)) == FALSE)
 			{
-				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+				$this->response(array('status' => 0, 'error' => 'Invalid user identifier.'), 400);
 			} else {
-				$this->response($subject, 200);
+				$this->response($attendance, 200);
 			}
 		}
 	}
@@ -188,5 +189,5 @@ class Attendance extends REST_Controller {
 
 }
 
-/* End of file board.php */
-/* Location: ./application/controllers/board.php */
+/* End of file attendance.php */
+/* Location: ./application/controllers/attendance.php */

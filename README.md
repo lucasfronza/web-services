@@ -1,11 +1,12 @@
 web-services
 ============
 #Checklist
+- [ ] attendance/attendance_model
 - [x] attendance/index_post()
 - [ ] attendance/index_delete()
 - [ ] attendance/index_get()
 - [x] attendance/user_post()
-- [ ] attendance/index_post()
+- [x] attendance/user_get()
 - [x] quiz/index_post()
 - [x] quiz/index_delete()
 - [x] quiz/index_get()
