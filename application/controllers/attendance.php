@@ -9,6 +9,7 @@ class Attendance extends REST_Controller {
     {
 		parent::__construct();
         $this->load->model('key_model');
+        $this->load->model('attendance_model');
 	}
 
 	# Cria um novo Quadro de Presença, retornando um KEY
