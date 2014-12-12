@@ -1,21 +1,9 @@
 web-services
 ============
 #Checklist
-- [ ] attendance/attendance_model
-- [x] attendance/index_post()
-- [x] attendance/index_delete()
-- [x] attendance/index_get()
-- [x] attendance/user_post()
-- [x] attendance/user_get()
-- [x] attendance/user_delete()
-- [x] attendance/user_put()
-- [x] attendance/userattendance_put()
-- [x] quiz/index_post()
-- [x] quiz/index_delete()
-- [x] quiz/index_get()
-- [x] quiz/index_put()
-- [x] quiz/quiz_model
-- [x] email/index_post()
+- [x] Quadro de Presença
+- [x] Quiz
+- [x] Email
 - [x] Quadro de Notas
 
 #Planejamento Notificações por email

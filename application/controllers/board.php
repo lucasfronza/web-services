@@ -167,7 +167,8 @@ class Board extends REST_Controller {
 			if ($subject != FALSE)
 			{
 				$obj->subject = $subject;
-				if(empty($this->board_model->getSubject($obj)))
+				$ret = $this->board_model->getSubject($obj);
+				if(!isset($ret))
 				{
 					$this->response(array('status' => 0, 'error' => 'Subject_id not matching.'), 400);
 				}
