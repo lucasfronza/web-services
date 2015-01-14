@@ -57,128 +57,128 @@ class Board extends REST_Controller {
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
 		} else {
-			$this->response($this->board_model->getAllSubjects($key), 200);
+			$this->response($this->board_model->getAllUsers($key), 200);
 		}
 	}
 
-	# Passando um board_key por parametro, cria uma materia, passando o nome, e a nota(opcional)
-	public function subject_post()
+	# Passando um board_key por parametro, cria um usuario, passando o nome, e a nota(opcional)
+	public function user_post()
 	{
 		$key = $this->post('key');
-		$subject = $this->post('subject');
+		$user = $this->post('user');
 		$score = $this->post('score');
 
 		if (!$this->key_model->_key_exists($key) || $key == FALSE)
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
-		} else if ($subject == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Subject name not found.'), 400);
+		} else if ($user == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'User identifier not found.'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject = $subject;
+			$obj->user = $user;
 
 			if ($score != FALSE)
 			{
 				$obj->score = $score;
 			}
-			if ($subject_id = $this->board_model->insertSubject($obj))
+			if ($id = $this->board_model->insertUser($obj))
 			{
-				$this->response(array('status' => 1, 'subject_id' => $subject_id), 201); // 201 = Created
+				$this->response(array('status' => 1, 'id' => $id), 201); // 201 = Created
 			} else {
-				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
+				$this->response(array('status' => 0, 'error' => 'Could not save the user.'), 500); // 500 = Internal Server Error
 			}
 		}
 	}
 
-	# Passando um board_key e um subject_id por parametro, retorna os dados associados à materia
-	public function subject_get()
+	# Passando um board_key e um id por parametro, retorna os dados associados ao usuario
+	public function user_get()
 	{
 		$key = $this->get('key');
-		$subject_id = $this->get('subject_id');
+		$id = $this->get('id');
 
 		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
-		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+		} else if ($id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing id'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
+			$obj->id = $id;
 
-			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			if (($user = $this->board_model->getUser($obj)) == FALSE)
 			{
-				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+				$this->response(array('status' => 0, 'error' => 'Invalid id'), 400);
 			} else {
-				$this->response($subject, 200);
+				$this->response($user, 200);
 			}
 		}
 	}
 
-	# Passando um board_key e um subject_id por parametro, deleta a materia
-	public function subject_delete()
+	# Passando um board_key e um id por parametro, deleta o usuario
+	public function user_delete()
 	{
 		$key = isset($_SERVER['HTTP_KEY']) ? $_SERVER['HTTP_KEY'] : FALSE;
-		$subject_id = isset($_SERVER['HTTP_ID']) ? $_SERVER['HTTP_ID'] : FALSE;
+		$id = isset($_SERVER['HTTP_ID']) ? $_SERVER['HTTP_ID'] : FALSE;
 
 		if ( ! $this->key_model->_key_exists($key) || $key == FALSE )
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.', 'message' => 'Remember to pass the key: CURLOPT_HTTPHEADER, array("Accept: application/json","key: $key")'), 400);
-		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id', 'message' => 'Remember to pass the subject_id: CURLOPT_HTTPHEADER, array("Accept: application/json","id: $id")'), 400);
+		} else if ($id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing id', 'message' => 'Remember to pass the id: CURLOPT_HTTPHEADER, array("Accept: application/json","id: $id")'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
+			$obj->id = $id;
 
-			if (($subject = $this->board_model->getSubject($obj)) == FALSE)
+			if (($user = $this->board_model->getUser($obj)) == FALSE)
 			{
-				$this->response(array('status' => 0, 'error' => 'Invalid subject_id'), 400);
+				$this->response(array('status' => 0, 'error' => 'Invalid id'), 400);
 			} else {
-				$this->board_model->deleteSubject($obj);
-				$this->response(array('status' => 1, 'message' => 'Subject deleted'));
+				$this->board_model->deleteUser($obj);
+				$this->response(array('status' => 1, 'message' => 'User deleted'));
 			}
 		}
 	}
 
-	# Passando um board_key e um subject_id, nome e/ou nota por parametro, atualiza nome e/ou nota da materia
-	public function subject_put()
+	# Passando um board_key e um id, nome e/ou nota por parametro, atualiza nome e/ou nota da usuario
+	public function user_put()
 	{
 		$key = $this->put('key');
-		$subject_id = $this->put('subject_id');
-		$subject = $this->put('subject');
+		$id = $this->put('id');
+		$user = $this->put('user');
 		$score = $this->put('score');
 
 		if (!$this->key_model->_key_exists($key) || $key == FALSE)
 		{
 			$this->response(array('status' => 0, 'error' => 'Invalid API Key.'), 400);
-		} else if ($subject_id == FALSE) {
-			$this->response(array('status' => 0, 'error' => 'Missing subject_id'), 400);
+		} else if ($id == FALSE) {
+			$this->response(array('status' => 0, 'error' => 'Missing id'), 400);
 		} else {
 			$obj = new stdClass();
 			$obj->key = $key;
-			$obj->subject_id = $subject_id;
+			$obj->id = $id;
 
 			if ($score != FALSE)
 			{
 				$obj->score = $score;
 			}
-			if ($subject != FALSE)
+			if ($user != FALSE)
 			{
-				$obj->subject = $subject;
-				$ret = $this->board_model->getSubject($obj);
+				$obj->user = $user;
+				$ret = $this->board_model->getUser($obj);
 				if(!isset($ret))
 				{
-					$this->response(array('status' => 0, 'error' => 'Subject_id not matching.'), 400);
+					$this->response(array('status' => 0, 'error' => 'id not matching.'), 400);
 				}
 			}
 
-			if ($this->board_model->updateSubject($obj))
+			if ($this->board_model->updateUser($obj))
 			{
-				$this->response(array('status' => 1, 'message' => 'Subject updated.'), 200);
+				$this->response(array('status' => 1, 'message' => 'User updated.'), 200);
 			} else {
-				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
+				$this->response(array('status' => 0, 'error' => 'Could not save the user.'), 500); // 500 = Internal Server Error
 			}
 		}
 	}

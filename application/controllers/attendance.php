@@ -90,7 +90,7 @@ class Attendance extends REST_Controller {
 			}
 			if ($this->attendance_model->insertUser($obj))
 			{
-				$this->response(array('status' => 1, 201); // 201 = Created
+				$this->response(array('status' => 1, 201)); // 201 = Created
 			} else {
 				$this->response(array('status' => 0, 'error' => 'Could not save the subject.'), 500); // 500 = Internal Server Error
 			}
@@ -152,10 +152,10 @@ class Attendance extends REST_Controller {
 	# 	atualiza os dados associados ao mesmo
 	public function user_put()
 	{
-		$key 		= $this->post('key');
-		$user 		= $this->post('user');
-		$attendance = $this->post('attendance');
-		$absence 	= $this->post('absence');
+		$key 		= $this->put('key');
+		$user 		= $this->put('user');
+		$attendance = $this->put('attendance');
+		$absence 	= $this->put('absence');
 
 		if (!$this->key_model->_key_exists($key) || $key == FALSE)
 		{
@@ -166,7 +166,9 @@ class Attendance extends REST_Controller {
 			$obj = new stdClass();
 			$obj->key = $key;
 			$obj->user = $user;
-			if(empty($this->attendance_model->getUser($obj)))
+
+			$ret = $this->attendance_model->getUser($obj);
+			if(!isset($ret))
 			{
 				$this->response(array('status' => 0, 'error' => 'User identifier not matching.'), 400);
 			}
@@ -180,7 +182,7 @@ class Attendance extends REST_Controller {
 			}
 			if ($this->attendance_model->updateUser($obj))
 			{
-				$this->response(array('status' => 1, 200);
+				$this->response(array('status' => 1, 200));
 			} else {
 				$this->response(array('status' => 0, 'error' => 'Could not save changes.'), 500); // 500 = Internal Server Error
 			}
@@ -205,7 +207,9 @@ class Attendance extends REST_Controller {
 			$obj = new stdClass();
 			$obj->key = $key;
 			$obj->user = $user;
-			if (empty($user_ = $this->attendance_model->getUser($obj)))
+
+			$user_ = $this->attendance_model->getUser($obj);
+			if (!isset($user_))
 			{
 				$this->response(array('status' => 0, 'error' => 'User identifier not matching.'), 400);
 			}
@@ -219,7 +223,7 @@ class Attendance extends REST_Controller {
 			}
 			if ($this->attendance_model->updateUser($obj))
 			{
-				$this->response(array('status' => 1, 200);
+				$this->response(array('status' => 1, 200));
 			} else {
 				$this->response(array('status' => 0, 'error' => 'Could not save changes.'), 500); // 500 = Internal Server Error
 			}

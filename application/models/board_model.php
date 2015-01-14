@@ -7,45 +7,45 @@ class Board_model extends CI_Model {
         $this->load->database();
     }
 
-    # Insere uma matéria
-    public function insertSubject($obj)
+    # Insere um usuario
+    public function insertUser($obj)
     {
         $this->db->insert('board', $obj);
         return $this->db->insert_id();
     }
 
-    # Retorna todas as matérias de um Quadro de Notas
-    public function getAllSubjects($key)
+    # Retorna todas os usuarios de um Quadro de Notas
+    public function getAllUsers($key)
     {
         return $this->db->where('key', $key)->get('board')->result();
     }
 
-    # Deleta todas as matérias de um QN
+    # Deleta todos usuarios de um QN
     public function deleteBoard($key)
     {
         return $this->db->where('key', $key)->delete('board');
     }
 
-    # Atualiza uma matéria
-    public function updateSubject($obj)
+    # Atualiza um usuario
+    public function updateUser($obj)
     {
-        $this->db->where('subject_id', $obj->subject_id);
+        $this->db->where('id', $obj->id);
         $this->db->where('key', $obj->key);
         return $this->db->update('board', $obj);
     }
 
-    # Seleciona uma matéria
-    public function getSubject($obj)
+    # Seleciona um usuario
+    public function getUser($obj)
     {
-        $this->db->where('subject_id', $obj->subject_id);
+        $this->db->where('id', $obj->id);
         $this->db->where('key', $obj->key);
         return $this->db->get('board')->row();
     }
 
-    # Delete uma matéria
-    public function deleteSubject($obj)
+    # Delete um usuario
+    public function deleteUser($obj)
     {
-        $this->db->where('subject_id', $obj->subject_id);
+        $this->db->where('id', $obj->id);
         $this->db->where('key', $obj->key);
         return $this->db->delete('board');
     }
