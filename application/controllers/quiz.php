@@ -20,7 +20,23 @@ class Quiz extends REST_Controller {
 		// Insert the new key
 		if ($this->key_model->_insert_key($key, array()))
 		{
-			$this->response(array('status' => 1, 'key' => $key), 201); // 201 = Created
+
+			$obj = new stdClass();
+			$obj->key = $key;
+			$obj->question = $this->post('question');
+			$obj->alternative1 = $this->post('alternative1');
+			$obj->alternative2 = $this->post('alternative2');
+			$obj->alternative3 = $this->post('alternative3');
+			$obj->alternative4 = $this->post('alternative4');
+			$obj->alternative5 = $this->post('alternative5');
+			$obj->correctAnswer = $this->post('correctAnswer');
+
+			if ($this->quiz_model->insert($obj))
+			{
+				$this->response(array('status' => 1, 'message' => 'Quiz created.', 'key' => $key), 201);
+			} else {
+				$this->response(array('status' => 0, 'error' => 'Could not save the quiz.'), 500); // 500 = Internal Server Error
+			}
 		}
 		else
 		{
@@ -29,7 +45,7 @@ class Quiz extends REST_Controller {
 	}
 
 	# Passando key, questao, alternativas e resposta, atualiza o Quiz
-	public function subject_put()
+	public function index_put()
 	{
 		$key = $this->put('key');
 
