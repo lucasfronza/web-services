@@ -24,6 +24,7 @@ class Quiz extends REST_Controller {
 			$obj = new stdClass();
 			$obj->key = $key;
 			$obj->question = $this->post('question');
+			$obj->comment = $this->post('comment');
 			$obj->alternative1 = $this->post('alternative1');
 			$obj->alternative2 = $this->post('alternative2');
 			$obj->alternative3 = $this->post('alternative3');
@@ -52,6 +53,7 @@ class Quiz extends REST_Controller {
 		$obj = new stdClass();
 		$obj->key = $key;
 		$obj->question = $this->put('question');
+		$obj->comment = $this->put('comment');
 		$obj->alternative1 = $this->put('alternative1');
 		$obj->alternative2 = $this->put('alternative2');
 		$obj->alternative3 = $this->put('alternative3');
